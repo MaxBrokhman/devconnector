@@ -141,6 +141,50 @@ profileRouter.delete('/experience/:expId', makeAuth, async (req, res) => {
   }
 })
 
+// Update profile education
+profileRouter.put('/education', [
+  makeAuth,
+  check('school', 'School is required').notEmpty(),
+  check('degree', 'Degree is required').notEmpty(),
+  check('fieldOfStudy', 'Field of study is required').notEmpty(),
+  check('from', 'From date is required').notEmpty(),
+], 
+async (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array(),
+    })
+  }
+  const newEducation = {
+    ...req.body,
+  }
+  try {
+    const profile = await ProfileModel.findOne({ user: req.user.id })
+    profile.education = [
+      newEducation,
+      ...profile.education,
+    ]
+    await profile.save()
+    res.json({ profile })
+  } catch {
+    res.status(500).send('Server error')
+  }
+})
+
+// Delete education
+profileRouter.delete('/education/:eduId', makeAuth, async (req, res) => {
+  try {
+    const profile = await ProfileModel.findOne({ user: req.user.id })
+    const removeIdx = profile.education.findIndex(item => item._id === req.params.eduId)
+    profile.education.splice(removeIdx, 1)
+    await profile.save(profile)
+    res.json({ profile })
+  } catch {
+    res.status(500).send('Server error')
+  }
+})
+
 module.exports = {
   profileRouter,
 }
