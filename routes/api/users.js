@@ -67,7 +67,7 @@ userRouter.post('/', [
       },
       (error, token) => {
         if (error) throw error
-        res.status(200).json({ token })
+        res.status(201).json({ token })
       }
     )
   } catch {

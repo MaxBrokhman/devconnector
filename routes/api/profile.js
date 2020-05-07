@@ -3,6 +3,7 @@ const { check, validationResult } = require('express-validator')
 
 const { makeAuth } = require('../../middleware/auth')
 const { ProfileModel } = require('../../models/Profile')
+const { UserModel } = require('../../models/User')
 
 const profileRouter = express.Router()
 
@@ -52,7 +53,7 @@ async (req, res) => {
     }
     const newProfile = new ProfileModel(profile)
     await newProfile.save()
-    res.json({ profile: newProfile })
+    res.status(201).json({ profile: newProfile })
   } catch {
     res.status(500).send('Server error')
   }
@@ -81,6 +82,17 @@ profileRouter.get('/user/:userId', async (req, res) => {
       })
     }
     res.json(profile)
+  } catch {
+    res.status(500).send('Server error')
+  }
+})
+
+// Delete profile
+profileRouter.delete('/', makeAuth, async (req, res) => {
+  try {
+    await ProfileModel.findOneAndRemove({ user: req.user.id })
+    await UserModel.findOneAndRemove({ _id: req.user.id })
+    res.status(200).json({ message: 'User successfully deleted' })
   } catch {
     res.status(500).send('Server error')
   }
