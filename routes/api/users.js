@@ -57,8 +57,7 @@ userRouter.post('/', [
     const payload = {
       user: {
         id: newUser.id,
-
-      }
+      },
     }
     jwt.sign(
       payload, 
