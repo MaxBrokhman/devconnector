@@ -99,7 +99,7 @@ profileRouter.delete('/', makeAuth, async (req, res) => {
 })
 
 // Update profile expirience
-profileRouter.put('/expirience', [
+profileRouter.put('/experience', [
   makeAuth,
   check('title', 'Title is required').notEmpty(),
   check('company', 'Company is required').notEmpty(),
@@ -112,11 +112,9 @@ async (req, res) => {
       errors: errors.array(),
     })
   }
-
   const newExpirence = {
     ...req.body,
   }
-
   try {
     const profile = await ProfileModel.findOne({ user: req.user.id })
     profile.experience = [
@@ -124,7 +122,20 @@ async (req, res) => {
       ...profile.experience,
     ]
     await profile.save()
-    res.status(200).json(profile)
+    res.json({ profile })
+  } catch {
+    res.status(500).send('Server error')
+  }
+})
+
+// Delete experience
+profileRouter.delete('/experience/:expId', makeAuth, async (req, res) => {
+  try {
+    const profile = await ProfileModel.findOne({ user: req.user.id })
+    const removeIdx = profile.experience.findIndex(item => item._id === req.params.expId)
+    profile.experience.splice(removeIdx, 1)
+    await profile.save(profile)
+    res.json({ profile })
   } catch {
     res.status(500).send('Server error')
   }
