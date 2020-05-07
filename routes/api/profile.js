@@ -98,6 +98,38 @@ profileRouter.delete('/', makeAuth, async (req, res) => {
   }
 })
 
+// Update profile expirience
+profileRouter.put('/expirience', [
+  makeAuth,
+  check('title', 'Title is required').notEmpty(),
+  check('company', 'Company is required').notEmpty(),
+  check('from', 'From date is required').notEmpty(),
+], 
+async (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array(),
+    })
+  }
+
+  const newExpirence = {
+    ...req.body,
+  }
+
+  try {
+    const profile = await ProfileModel.findOne({ user: req.user.id })
+    profile.experience = [
+      newExpirence,
+      ...profile.experience,
+    ]
+    await profile.save()
+    res.status(200).json(profile)
+  } catch {
+    res.status(500).send('Server error')
+  }
+})
+
 module.exports = {
   profileRouter,
 }
