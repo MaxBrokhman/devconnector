@@ -10,7 +10,7 @@ profileRouter.get('/me', makeAuth, async (req, res) => {
   try {
     const profile = await ProfileModel
       .findOne({ user: req.user.id })
-      .populate('User', ['name', 'avatar'])
+      .populate('user', ['name', 'avatar'])
 
     if (!profile) {
       return res.status(400).json({
@@ -24,6 +24,7 @@ profileRouter.get('/me', makeAuth, async (req, res) => {
   }
 })
 
+// Creation and update of profile
 profileRouter.post('/', [
   makeAuth, 
   check('status', 'Status is required').notEmpty(),
@@ -52,6 +53,34 @@ async (req, res) => {
     const newProfile = new ProfileModel(profile)
     await newProfile.save()
     res.json({ profile: newProfile })
+  } catch {
+    res.status(500).send('Server error')
+  }
+})
+
+// Get all profiles
+profileRouter.get('/', async (req, res) => {
+  try {
+    const profiles = await ProfileModel.find().populate('user', ['name', 'avatar'])
+    res.json(profiles)
+  } catch {
+    res.status(500).send('Server error')
+  }
+})
+
+// Get profile by user id
+profileRouter.get('/user/:userId', async (req, res) => {
+  try {
+    const profile = await ProfileModel
+      .findOne({ user: req.params.userId })
+      .populate('user', ['name', 'avatar'])
+
+    if (!profile) {
+      return res.status(404).json({
+        message: 'Profile not found',
+      })
+    }
+    res.json(profile)
   } catch {
     res.status(500).send('Server error')
   }
