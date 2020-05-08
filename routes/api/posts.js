@@ -79,6 +79,37 @@ postRouter.delete('/:postId', makeAuth, async (req, res) => {
   }
 })
 
+// Like a post
+postRouter.put('/like/:id', makeAuth, async (req, res) => {
+  try {
+    const post = await PostModel.findById(req.params.id)
+    if (post.likes.find(like => like._id.toString() === req.user.id)) {
+      return res.status(400).json({ message: 'Post already liked' })
+    }
+    post.likes.unshift(req.user.id)
+    await post.save()
+    res.json({ likes: post.likes })
+  } catch {
+    res.status(500).send('Server error')
+  }
+})
+
+// Unlike post
+postRouter.put('/unlike/:id', makeAuth, async (req, res) => {
+  try {
+    const post = await PostModel.findById(req.params.id)
+    const removeIndex = post.likes.findIndex(like => like._id.toString() === req.user.id)
+    if (removeIndex === -1) {
+      return res.status(400).json({ message: 'Post has not yet been liked' })
+    }
+    post.likes.splice(removeIndex, 1)
+    await post.save()
+    res.json({ likes: post.likes })
+  } catch {
+    res.status(500).send('Server error')
+  }
+})
+
 module.exports = {
   postRouter,
 }
