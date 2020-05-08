@@ -7,6 +7,7 @@ const { makeAuth } = require('../../middleware/auth')
 
 const postRouter = express.Router()
 
+// Add a post
 postRouter.post('/', [
   makeAuth,
   check('text', 'Text is required').notEmpty(),
@@ -107,6 +108,57 @@ postRouter.put('/unlike/:id', makeAuth, async (req, res) => {
     res.json({ likes: post.likes })
   } catch {
     res.status(500).send('Server error')
+  }
+})
+
+// Add comment
+postRouter.post('/comments/:id', [
+  makeAuth,
+  check('text', 'Text is required').notEmpty(),
+], 
+async (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array(),
+    })
+  }
+
+  try {
+    const user = await UserModel.findById(req.user.id).select('-password')
+    const post = await PostModel.findById(req.params.id)
+    const newComment = {
+      ...req.body,
+      name: user.name,
+      avatar: user.avatar,
+      user: req.user.id,
+    }
+    post.comments.unshift(newComment)
+    await post.save()
+
+    res.json({ comments: post.comments })
+  } catch {
+    res.status(500).send('Server error')
+  }
+})
+
+// Delete comment
+postRouter.delete('/comments/:postId/:commentId', makeAuth, async (req, res) => {
+  try {
+    const post = await PostModel.findById(req.params.postId)
+    const commentIdx = post.comments.findIndex(item => item.id === req.params.commentId)
+    if (!post || commentIdx === -1 || req.user.id !== post.user.toString()) {
+      return res.status(404).json({
+        message: 'Comment not found',
+      })
+    }
+    post.comments.splice(commentIdx, 1)
+    await post.save()
+    res.json({ comments: post.comments })
+  } catch {
+    res.status(404).json({
+      message: 'Comment not found',
+    })
   }
 })
 
