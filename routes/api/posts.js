@@ -34,6 +34,51 @@ async (req, res) => {
   }
 })
 
+// Get all posts
+postRouter.get('/', makeAuth, async (req, res) => {
+  try {
+    const posts = await PostModel.find().sort({ date: -1 })
+    res.json({ posts })
+  } catch {
+    res.status(500).send('Server error')
+  }
+})
+
+// Get post by id
+postRouter.get('/:postId', makeAuth, async (req, res) => {
+  try {
+    const post = await PostModel.findById(req.params.postId)
+    if (!post) {
+      return res.status(404).json({
+        message: 'Post not found',
+      })
+    }
+    res.json({ post })
+  } catch {
+    res.status(404).json({
+      message: 'Post not found',
+    })
+  }
+})
+
+// Delete post
+postRouter.delete('/:postId', makeAuth, async (req, res) => {
+  try {
+    const post = await PostModel.findById(req.params.postId)
+    if (!post || req.user.id !== post.user.toString()) {
+      return res.status(404).json({
+        message: 'Post not found',
+      })
+    }
+    await post.remove()
+    res.json({ post })
+  } catch {
+    res.status(404).json({
+      message: 'Post not found',
+    })
+  }
+})
+
 module.exports = {
   postRouter,
 }
