@@ -21,6 +21,6 @@ app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/profile', profileRouter)
 app.use('/api/v1/posts', postRouter)
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 5000
 
 app.listen(port)
