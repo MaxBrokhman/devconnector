@@ -1,8 +1,11 @@
 import React, { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import axios from 'axios'
 
-export const Register = () => {
+import { setAlert } from '../../actions/alert'
+
+const RegisterComponent = ({ setAlert }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,27 +24,24 @@ export const Register = () => {
   })
   const onSubmit = async (evt) => {
     evt.preventDefault()
-    if (password !== passwordConfirm) {
-      console.log('Passwords not match')
-    } else {
-      const newUser = {
-        name,
-        email,
-        password,
-      }
+    if (password !== passwordConfirm) return setAlert('Passwords do not match', 'danger')
+    const newUser = {
+      name,
+      email,
+      password,
+    }
 
-      try {
-        const config = {
-          headers: {
-            'Content-Type': 'application/json'
-          }
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json'
         }
-        const body = JSON.stringify(newUser)
-        const res = await axios.post('/api/v1/users', body, config)
-        console.log(res.data)
-      } catch (err) {
-        console.error(err)
       }
+      const body = JSON.stringify(newUser)
+      const res = await axios.post('/api/v1/users', body, config)
+      console.log(res.data)
+    } catch (err) {
+      console.error(err)
     }
   }
   return (
@@ -101,4 +101,7 @@ export const Register = () => {
         Already have an account? <Link to="/login">Sign In</Link>
       </p>
     </Fragment>
-)}
+  )
+}
+
+export const Register = connect(null, { setAlert })(RegisterComponent)
