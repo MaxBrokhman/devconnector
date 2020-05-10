@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs')
 const config = require('config')
 const jwt = require('jsonwebtoken')
 
-const {UserModel} = require('../../models/User')
+const { UserModel } = require('../../models/User')
 const { makeAuth } = require('../../middleware/auth')
 
 const authRouter = express.Router()
@@ -71,7 +71,6 @@ async (req, res) => {
   } catch {
     res.status(500).send('Server error')
   }
-  
 })
 
 module.exports = {

@@ -1,10 +1,10 @@
 const express = require('express')
 
-const {connectDb} = require('./config/db')
-const {userRouter} = require('./routes/api/users')
-const {authRouter} = require('./routes/api/auth')
-const {profileRouter} = require('./routes/api/profile')
-const {postRouter} = require('./routes/api/posts')
+const { connectDb } = require('./config/db')
+const { userRouter } = require('./routes/api/users')
+const { authRouter } = require('./routes/api/auth')
+const { profileRouter } = require('./routes/api/profile')
+const { postRouter } = require('./routes/api/posts')
 
 const app = express()
 
