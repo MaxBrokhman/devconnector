@@ -1,11 +1,15 @@
 import React, { Fragment, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import axios from 'axios'
 
 import { setAlert } from '../../actions/alert'
+import { registerUser } from '../../actions/auth'
 
-const RegisterComponent = ({ setAlert }) => {
+const RegisterComponent = ({ 
+  setAlert, 
+  registerUser, 
+  isAuthanticated,
+}) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,7 +26,7 @@ const RegisterComponent = ({ setAlert }) => {
     ...formData,
     [evt.target.name]: evt.target.value,
   })
-  const onSubmit = async (evt) => {
+  const onSubmit = (evt) => {
     evt.preventDefault()
     if (password !== passwordConfirm) return setAlert('Passwords do not match', 'danger')
     const newUser = {
@@ -30,20 +34,13 @@ const RegisterComponent = ({ setAlert }) => {
       email,
       password,
     }
-
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-      const body = JSON.stringify(newUser)
-      const res = await axios.post('/api/v1/users', body, config)
-      console.log(res.data)
-    } catch (err) {
-      console.error(err)
-    }
+    registerUser(newUser)
   }
+
+  if (isAuthanticated) {
+    return <Redirect to="/dashboard" />
+  }
+  
   return (
     <Fragment>
       <h1 className="large text-primary">Sign Up</h1>
@@ -104,4 +101,8 @@ const RegisterComponent = ({ setAlert }) => {
   )
 }
 
-export const Register = connect(null, { setAlert })(RegisterComponent)
+const mapStateToProps = (state) => ({
+  isAuthanticated: state.auth.isAuthanticated,
+})
+
+export const Register = connect(mapStateToProps, { setAlert, registerUser })(RegisterComponent)

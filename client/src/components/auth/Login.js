@@ -1,8 +1,10 @@
 import React, { Fragment, useState } from 'react'
-import { Link } from 'react-router-dom'
-import axios from 'axios'
+import { connect } from 'react-redux'
+import { Link, Redirect } from 'react-router-dom'
 
-export const Login = () => {
+import { loginUser } from '../../actions/auth'
+
+export const LoginComponent = ({ loginUser, isAuthanticated }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -17,23 +19,16 @@ export const Login = () => {
   })
   const onSubmit = async (evt) => {
     evt.preventDefault()
-    const newUser = {
+    const user = {
       email,
       password,
     }
 
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-      const body = JSON.stringify(newUser)
-      const res = await axios.post('/api/v1/auth', body, config)
-      console.log(res.data)
-    } catch (err) {
-      console.error(err)
-    }
+    loginUser(user)
+  }
+
+  if (isAuthanticated) {
+    return <Redirect to="/dashboard" />
   }
   return (
     <Fragment>
@@ -71,3 +66,9 @@ export const Login = () => {
     </Fragment>
   )
 }
+
+const mapStateToProps = (state) => ({
+  isAuthanticated: state.auth.isAuthanticated,
+})
+
+export const Login = connect(mapStateToProps, { loginUser })(LoginComponent)
