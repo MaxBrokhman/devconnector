@@ -18,15 +18,25 @@ export const NavbarComponent = ({
       <ul>
         {
           !loading && isAuthanticated && (
-            <a 
-              onClick={(evt) => {
-                evt.preventDefault()
-                logoutUser()
-              }}
-            >
-              <i className=" fas fa-sign-out-alt" />{'  '}
-              <span className="hide-sm">Logout</span>
-            </a>
+            <Fragment>
+              <li>
+                <Link to="/dashboard">
+                <i className=" fas fa-user" />{'  '}
+                  <span className="hide-sm">Dashboard</span>
+                </Link>
+              </li>
+              <li>
+                <a 
+                  onClick={(evt) => {
+                    evt.preventDefault()
+                    logoutUser()
+                  }}
+                >
+                  <i className=" fas fa-sign-out-alt" />{'  '}
+                  <span className="hide-sm">Logout</span>
+                </a>
+              </li>
+            </Fragment>
           )
         }
         {
