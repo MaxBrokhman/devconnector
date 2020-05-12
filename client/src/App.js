@@ -15,6 +15,7 @@ import { Alert } from './components/layout/Alert'
 import { loadUser } from './actions/auth'
 import { Dashboard } from './components/dashboard/Dashboard'
 import { PrivateRoute } from './components/routing/PrivateRoute'
+import { CreateProfile } from './components/profile-forms/CreateProfile';
 
 import './App.css'
 
@@ -33,6 +34,7 @@ export const App = () => {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/dashboard" Component={Dashboard} />
+            <PrivateRoute exact path="/create-profile" Component={CreateProfile} />
           </Switch>
         </section>
       </Router>
