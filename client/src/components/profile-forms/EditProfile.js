@@ -1,10 +1,19 @@
-import React, { useState, Fragment } from 'react'
+import React, { 
+  useState, 
+  Fragment, 
+  useEffect,
+} from 'react'
 import { connect } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 
-import { createProfile } from '../../actions/profile'
+import { editProfile, getProfile } from '../../actions/profile'
 
-const CreateProfileComponent = ({ createProfile }) => {
+const EditProfileComponent = ({ 
+  editProfile, 
+  getProfile, 
+  profile,
+  loading,
+}) => {
   const [formData, setFormData] = useState({
     company: '',
     website: '',
@@ -23,19 +32,29 @@ const CreateProfileComponent = ({ createProfile }) => {
   })
   const [displaySocialInputs, toggleSocialInputs] = useState(false)
   const history = useHistory()
+  useEffect(() => {
+    getProfile()
+    profile && setFormData({
+      ...profile,
+      skills: profile.skills.toString(),
+    })
+  }, [loading])
   const {
     bio,
     company,
-    facebook,
+    
     githubUsername,
-    instagram,
-    linkedin,
     location,
     skills,
     status,
-    twitter,
     website,
-    youtube,
+    social: {
+      youtube,
+      twitter,
+      instagram,
+      linkedin,
+      facebook,
+    },
   } = formData
 
   const onChange = (evt) => {
@@ -59,13 +78,13 @@ const CreateProfileComponent = ({ createProfile }) => {
 
   const onSubmit = (evt) => {
     evt.preventDefault()
-    createProfile(formData, history)
+    editProfile(formData, history)
   }
 
   return (
     <Fragment>
       <h1 className="large text-primary">
-        Create Your Profile
+        Edit Your Profile
       </h1>
       <p className="lead">
         <i className="fas fa-user"></i> Let's get some information to make your
@@ -85,9 +104,7 @@ const CreateProfileComponent = ({ createProfile }) => {
             <option value="Intern">Intern</option>
             <option value="Other">Other</option>
           </select>
-          <small className="form-text"
-            >Give us an idea of where you are at in your career</small
-          >
+          <small className="form-text">Give us an idea of where you are at in your career</small>
         </div>
         <div className="form-group">
           <input 
@@ -234,10 +251,15 @@ const CreateProfileComponent = ({ createProfile }) => {
         }
         
         <input type="submit" className="btn btn-primary my-1" value="Send" />
-        <a className="btn btn-light my-1" href="dashboard.html">Go Back</a>
+        <Link className="btn btn-light my-1" to="/dashboard">Go Back</Link>
       </form>
     </Fragment>
   )
 }
 
-export const CreateProfile = connect(null, { createProfile })(CreateProfileComponent)
+const mapStateToProps = (state) => ({
+  profile: state.profile.profile,
+  loading: state.profile.loading,
+})
+
+export const EditProfile = connect(mapStateToProps, { editProfile, getProfile })(EditProfileComponent)

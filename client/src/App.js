@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import { 
   BrowserRouter as Router, 
   Switch, 
@@ -15,7 +15,8 @@ import { Alert } from './components/layout/Alert'
 import { loadUser } from './actions/auth'
 import { Dashboard } from './components/dashboard/Dashboard'
 import { PrivateRoute } from './components/routing/PrivateRoute'
-import { CreateProfile } from './components/profile-forms/CreateProfile';
+import { CreateProfile } from './components/profile-forms/CreateProfile'
+import { EditProfile } from './components/profile-forms/EditProfile'
 
 import './App.css'
 
@@ -35,6 +36,7 @@ export const App = () => {
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/dashboard" Component={Dashboard} />
             <PrivateRoute exact path="/create-profile" Component={CreateProfile} />
+            <PrivateRoute exact path="/edit-profile" Component={EditProfile} />
           </Switch>
         </section>
       </Router>

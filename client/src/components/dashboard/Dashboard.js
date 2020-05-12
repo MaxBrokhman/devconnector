@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { getProfile } from '../../actions/profile'
 import { Spinner } from '../layout/Spinner'
+import { DashboardActions } from './DashboardActions'
 
 export const DashboardComponent = ({
   getProfile,
@@ -22,13 +23,13 @@ export const DashboardComponent = ({
       <Fragment>
         <h1 className="large text-primary">Dashboard</h1>
         <p className="lead">
-          <i className="fas fa-user"></i>
+          <i className="fas fa-user"></i>{'  '}
           Welcome { user && user.name }
         </p>
         {
           profile && (
             <Fragment>
-
+              <DashboardActions />
             </Fragment>
           )
         }
