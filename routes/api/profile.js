@@ -6,6 +6,7 @@ const config = require('config')
 const { makeAuth } = require('../../middleware/auth')
 const { ProfileModel } = require('../../models/Profile')
 const { UserModel } = require('../../models/User')
+const { PostModel } = require('../../models/Post')
 
 const profileRouter = express.Router()
 
@@ -92,11 +93,12 @@ profileRouter.get('/user/:userId', async (req, res) => {
 // Delete profile
 profileRouter.delete('/', makeAuth, async (req, res) => {
   try {
+    await PostModel.deleteMany({ user: req.user.id })
     await ProfileModel.findOneAndRemove({ user: req.user.id })
     await UserModel.findOneAndRemove({ _id: req.user.id })
     res.status(200).json({ message: 'User successfully deleted' })
   } catch {
-    res.status(500).send('Server error')
+    res.status(500).send({ message: 'Server error' })
   }
 })
 

@@ -99,7 +99,7 @@ const AddEducationComponent = ({ addEducation }) => {
               onChange={onCurrentToggle}
             /> 
             {'  '}
-            Current Job
+            Current School
           </p>
         </div>
         <div className="form-group">
