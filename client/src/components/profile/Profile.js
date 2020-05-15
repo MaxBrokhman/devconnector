@@ -8,6 +8,7 @@ import { ProfileTop } from './ProfileTop'
 import { ProfileAbout } from './ProfileAbout'
 import { ProfileExperience } from './ProfileExperience'
 import { ProfileEducation } from './ProfileEducation'
+import { ProfileGithub } from './ProfileGithub'
 
 const ProfileComponent = ({
   authLoading,
@@ -70,6 +71,11 @@ const ProfileComponent = ({
                   : (<h4>No education credentials</h4>)
                 }
               </div>
+              {
+                profile.githubUsername && (
+                  <ProfileGithub username={profile.githubUsername} />
+                )
+              }
             </div>
           </Fragment>
         )
