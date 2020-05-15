@@ -30,7 +30,7 @@ export const ProfileTop = ({ profile: {
       }
       {
         social && Object.keys(social).map(network => social[network] && (
-          <a href={social[network]} target="_blank" rel="noopener noreferrer">
+          <a href={social[network]} target="_blank" rel="noopener noreferrer" key={network}>
             <i className={`fab fa-${network} fa-2x`}></i>
           </a>
         ))
