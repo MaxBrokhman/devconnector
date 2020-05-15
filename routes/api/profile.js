@@ -24,7 +24,7 @@ profileRouter.get('/me', makeAuth, async (req, res) => {
 
     res.json({ profile })
   } catch {
-    res.status(500).send('Server error')
+    res.status(500).send({ message: 'Server error' })
   }
 })
 
@@ -58,7 +58,7 @@ async (req, res) => {
     await newProfile.save()
     res.status(201).json({ profile: newProfile })
   } catch {
-    res.status(500).send('Server error')
+    res.status(500).send({ message: 'Server error' })
   }
 })
 
@@ -66,9 +66,9 @@ async (req, res) => {
 profileRouter.get('/', async (req, res) => {
   try {
     const profiles = await ProfileModel.find().populate('user', ['name', 'avatar'])
-    res.json(profiles)
+    res.json({ profiles })
   } catch {
-    res.status(500).send('Server error')
+    res.status(500).send({ message: 'Server error' })
   }
 })
 
@@ -84,9 +84,9 @@ profileRouter.get('/user/:userId', async (req, res) => {
         message: 'Profile not found',
       })
     }
-    res.json(profile)
+    res.json({ profile })
   } catch {
-    res.status(500).send('Server error')
+    res.status(500).send({ message: 'Server error' })
   }
 })
 
@@ -141,7 +141,7 @@ profileRouter.delete('/experience/:expId', makeAuth, async (req, res) => {
     await profile.save(profile)
     res.json({ profile })
   } catch {
-    res.status(500).send('Server error')
+    res.status(500).send({ message: 'Server error' })
   }
 })
 
@@ -172,7 +172,7 @@ async (req, res) => {
     await profile.save()
     res.json({ profile })
   } catch {
-    res.status(500).send('Server error')
+    res.status(500).send({ message: 'Server error' })
   }
 })
 
@@ -185,7 +185,7 @@ profileRouter.delete('/education/:eduId', makeAuth, async (req, res) => {
     await profile.save(profile)
     res.json({ profile })
   } catch {
-    res.status(500).send('Server error')
+    res.status(500).send({ message: 'Server error' })
   }
 })
 

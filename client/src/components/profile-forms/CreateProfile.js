@@ -233,8 +233,8 @@ const CreateProfileComponent = ({ createProfile }) => {
           )
         }
         
-        <input type="submit" className="btn btn-primary my-1" value="Send" />
-        <a className="btn btn-light my-1" href="dashboard.html">Go Back</a>
+        <input type="submit" className="btn btn-primary my-1" value="Submit" />
+        <Link className="btn btn-light my-1" to="/dashboard">Go Back</Link>
       </form>
     </Fragment>
   )
