@@ -2,6 +2,7 @@ import {
   GET_POSTS,
   POST_ERROR,
   UPDATE_LIKES,
+  DELETE_POST,
 } from '../actions/types'
 
 const initialState = {
@@ -30,6 +31,11 @@ export const postReducer = (state = initialState, action) => {
           }
           : post
         )
+      }
+    case DELETE_POST: 
+      return {
+        ...state,
+        posts: state.posts.filter(post => post._id !== action.payload),
       }
     case POST_ERROR:
       return {

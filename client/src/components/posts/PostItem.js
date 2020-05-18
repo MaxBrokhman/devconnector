@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import {
   addLike,
   removeLike,
+  deletePost,
 } from '../../actions/post'
 
 const PostItemComponent = ({ 
@@ -14,6 +15,7 @@ const PostItemComponent = ({
   authLoading, 
   addLike,
   removeLike,
+  deletePost,
 }) => (
   <div className="post bg-white p-1 my-1">
     <div>
@@ -62,6 +64,7 @@ const PostItemComponent = ({
           <button      
             type="button"
             className="btn btn-danger"
+            onClick={() => deletePost(post._id)}
           >
             <i className="fas fa-times"></i>
           </button>
@@ -76,4 +79,12 @@ const mapStateToProps = (state) => ({
   authLoading: state.auth.loading,
 })
 
-export const PostItem = connect(mapStateToProps, { addLike, removeLike })(PostItemComponent)
+export const PostItem = connect(
+  mapStateToProps, 
+    { 
+      addLike, 
+      removeLike, 
+      deletePost, 
+    }
+  )
+(PostItemComponent)
