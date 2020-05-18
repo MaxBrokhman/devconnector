@@ -1,6 +1,7 @@
 import {
   GET_POSTS,
   POST_ERROR,
+  UPDATE_LIKES,
 } from '../actions/types'
 
 const initialState = {
@@ -17,6 +18,18 @@ export const postReducer = (state = initialState, action) => {
         ...state,
         posts: action.payload,
         loading: false,
+      }
+    case UPDATE_LIKES: 
+      return {
+        ...state,
+        loading: false,
+        posts: state.posts.map(post => post._id === action.payload.id 
+          ? {
+            ...post,
+            likes: action.payload.likes,
+          }
+          : post
+        )
       }
     case POST_ERROR:
       return {
