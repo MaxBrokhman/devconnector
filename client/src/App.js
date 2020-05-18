@@ -21,6 +21,7 @@ import { AddExperience } from './components/profile-forms/AddExperience'
 import { AddEducation } from './components/profile-forms/AddEducation'
 import { Profiles } from './components/profiles/Profiles'
 import { Profile } from './components/profile/Profile'
+import { Posts } from './components/posts/Posts'
 
 import './App.css'
 
@@ -45,6 +46,7 @@ export const App = () => {
             <PrivateRoute exact path="/edit-profile" Component={EditProfile} />
             <PrivateRoute exact path="/add-experience" Component={AddExperience} />
             <PrivateRoute exact path="/add-education" Component={AddEducation} />
+            <PrivateRoute exact path="/posts" Component={Posts} />
           </Switch>
         </section>
       </Router>
