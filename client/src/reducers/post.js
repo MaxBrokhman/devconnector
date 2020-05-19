@@ -5,6 +5,7 @@ import {
   DELETE_POST,
   ADD_POST,
   GET_POST,
+  UPDATE_COMMENTS,
 } from '../actions/types'
 
 const initialState = {
@@ -59,6 +60,15 @@ export const postReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
         loading: false,
+      }
+    case UPDATE_COMMENTS:
+      return {
+        ...state,
+        loading: false,
+        post: {
+          ...state.post,
+          comments: action.payload,
+        }
       }
     default:
       return state

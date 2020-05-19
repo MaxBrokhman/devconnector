@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom'
 
 import { Spinner } from '../layout/Spinner'
 import { getPost } from '../../actions/post'
+import { CommentForm } from './CommentForm'
 
 const PostComponent = ({ 
   getPost,
@@ -38,6 +39,7 @@ const PostComponent = ({
                 <p className="my-1">{post.text}</p>
               </div>
             </div>
+            <CommentForm postId={id} />
           </Fragment>
         )
       }
