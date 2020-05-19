@@ -3,6 +3,7 @@ import {
   POST_ERROR,
   UPDATE_LIKES,
   DELETE_POST,
+  ADD_POST,
 } from '../actions/types'
 
 const initialState = {
@@ -36,6 +37,15 @@ export const postReducer = (state = initialState, action) => {
       return {
         ...state,
         posts: state.posts.filter(post => post._id !== action.payload),
+      }
+    case ADD_POST:
+      return {
+        ...state,
+        loading: false,
+        posts: [
+          action.payload,
+          ...state.posts,
+        ],
       }
     case POST_ERROR:
       return {
