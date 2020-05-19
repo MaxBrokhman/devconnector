@@ -52,7 +52,7 @@ const PostItemComponent = ({
       >
         <i className="fas fa-thumbs-down"></i>
       </button>
-      <Link to={`/post/${post._id}`} className="btn btn-primary">
+      <Link to={`/posts/${post._id}`} className="btn btn-primary">
         Discussion {
           Boolean(post.comments.length) && (
             <span className='comment-count'>{post.comments.length}</span>

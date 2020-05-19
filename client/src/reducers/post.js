@@ -4,6 +4,7 @@ import {
   UPDATE_LIKES,
   DELETE_POST,
   ADD_POST,
+  GET_POST,
 } from '../actions/types'
 
 const initialState = {
@@ -46,6 +47,12 @@ export const postReducer = (state = initialState, action) => {
           action.payload,
           ...state.posts,
         ],
+      }
+    case GET_POST:
+      return {
+        ...state,
+        post: action.payload,
+        loading: false,
       }
     case POST_ERROR:
       return {
