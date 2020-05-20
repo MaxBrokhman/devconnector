@@ -52,7 +52,7 @@ export const NavbarComponent = ({
         {
           !loading && !isAuthanticated && (
             <Fragment>
-              <li><Link to="profiles.html">Developers</Link></li>
+              <li><Link to="/posts">Posts</Link></li>
               <li><Link to="/register">Register</Link></li>
               <li><Link to="/login">Login</Link></li>
             </Fragment>

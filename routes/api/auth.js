@@ -1,7 +1,6 @@
 const express = require('express')
 const { check, validationResult } = require('express-validator')
 const bcrypt = require('bcryptjs')
-const config = require('config')
 const jwt = require('jsonwebtoken')
 
 const { UserModel } = require('../../models/User')
@@ -59,7 +58,7 @@ async (req, res) => {
     }
     jwt.sign(
       payload, 
-      config.get('jwtSecret'), 
+      process.env.JWT_SECRET, 
       {
         expiresIn: 360000,
       },
